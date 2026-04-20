@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sri Lankan NIC Validator - Dual Birthday Entry</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 50px 0;
+        }
+        
+        .card {
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            background: white;
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .card-header h2 {
+            margin: 0;
+            font-weight: bold;
+            font-size: 28px;
+        }
+        
+        .card-header p {
+            margin: 10px 0 0;
+            opacity: 0.9;
+        }
+        
+        .card-body {
+            padding: 40px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .form-control, .form-select {
+            border-radius: 10px;
+            border: 2px solid #e0e0e0;
+            padding: 12px 15px;
+            font-size: 16px;
+            transition: all 0.3s;
+            width: 100%;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: #667eea;
+            outline: none;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        
+        .btn-validate {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 10px;
+            padding: 12px 30px;
+            font-size: 18px;
+            font-weight: 600;
+            width: 100%;
+            transition: transform 0.2s;
+            color: white;
+            cursor: pointer;
+        }
+        
+        .btn-validate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .info-box {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+        
+        .info-box h6 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        .info-box ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .info-box li {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        
+        .example {
+            font-family: monospace;
+            background: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 5px;
+            font-size: 13px;
+        }
+        
+        .method-selector {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .method-option {
+            cursor: pointer;
+            padding: 12px;
+            border-radius: 8px;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .method-option:hover {
+            background: #e9ecef;
+        }
+        
+        .method-option.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        .method-option i {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .method-option div {
+            font-weight: 600;
+        }
+        
+        .method-option small {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        
+        .birthday-section {
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .step-input {
+            text-align: center;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            color: white;
+        }
+        
+        footer p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .flatpickr-calendar {
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        .flatpickr-day.selected {
+            background: #667eea;
+            border-color: #667eea;
+        }
+        
+        .text-muted {
+            color: #6c757d;
+            font-size: 12px;
+            margin-top: 5px;
+            display: block;
+        }
+        
+        @media (max-width: 768px) {
+            .card-body {
+                padding: 25px;
+            }
+            
+            .container {
+                padding: 20px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-id-card"></i> NIC Validator</h2>
+                        <p>Sri Lankan National Identity Card Validation System</p>
+                    </div>
+                    <div class="card-body">
+                        <form id="nicForm">
+                            <!-- NIC Input -->
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <i class="fas fa-id-card"></i> NIC Number
+                                </label>
+                                <input type="text" 
+                                       class="form-control" 
+                                       id="nic" 
+                                       placeholder="e.g., 716941485V or 197169401485"
+                                       required>
+                                <small class="text-muted">Format: 123456789V (Old) or 199012345678 (New)</small>
+                            </div>
+                            
+                            <!-- Birthday Entry Method Selector -->
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <i class="fas fa-calendar-alt"></i> Birthday Entry Method
+                                </label>
+                                <div class="method-selector">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="method-option active" id="methodCalendar" onclick="selectMethod('calendar')">
+                                                <i class="fas fa-calendar-week"></i>
+                                                <div>Calendar Picker</div>
+                                                <small>Select from date picker</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="method-option" id="methodStep" onclick="selectMethod('step')">
+                                                <i class="fas fa-step-forward"></i>
+                                                <div>Step by Step</div>
+                                                <small>Enter Day, Month, Year</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Calendar Picker Section -->
+                            <div id="calendarSection">
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <i class="fas fa-calendar-check"></i> Select Birthday (DD-MM-YYYY)
+                                    </label>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           id="birthdayCalendar" 
+                                           placeholder="DD-MM-YYYY">
+                                    <small class="text-muted">Click to open calendar - Select date before today</small>
+                                </div>
+                            </div>
+                            
+                            <!-- Step by Step Section -->
+                            <div id="stepSection" style="display: none;">
+                                <label class="form-label">
+                                    <i class="fas fa-calendar-day"></i> Enter Birthday (DD-MM-YYYY)
+                                </label>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Day</label>
+                                            <select class="form-select step-input" id="day">
+                                                <option value="">Day</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Month</label>
+                                            <select class="form-select step-input" id="month">
+                                                <option value="">Month</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Year</label>
+                                            <select class="form-select step-input" id="year">
+                                                <option value="">Year</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <small class="text-muted">Enter your birth day, month, and year</small>
+                            </div>
+                            
+                            <button type="submit" class="btn-validate mt-3">
+                                <i class="fas fa-check-circle"></i> Validate NIC
+                            </button>
+                        </form>
+                        
+                        <div class="info-box">
+                            <h6><i class="fas fa-info-circle"></i> About NIC Validation</h6>
+                            <ul>
+                                <li><strong>Old NIC:</strong> 9 digits + V/X (e.g., <span class="example">716941485V</span>)</li>
+                                <li><strong>New NIC:</strong> 12 digits (e.g., <span class="example">197169401485</span>)</li>
+                                <li><strong>Gender:</strong> Day value 1-366 = Male, 501-866 = Female</li>
+                                <li><strong>Birth Year:</strong> Extracted from first 2 or 4 digits</li>
+                                <li><strong>Date Format:</strong> DD-MM-YYYY (e.g., 25-12-1990)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <footer>
+                    <p><i class="fas fa-shield-alt"></i> Secure NIC Validation System | Date Format: DD-MM-YYYY</p>
+                </footer>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // NIC Validator Class (Pure JavaScript)
+        class NICValidator {
+            
+            validate(nic, birthday) {
+                // Clean the NIC input
+                nic = nic.toUpperCase().trim();
+                
+                // Check NIC format
+                if (!this.isValidFormat(nic)) {
+                    return {
+                        valid: false,
+                        message: 'Invalid NIC format! Use format: 123456789V (Old) or 199012345678 (New)'
+                    };
+                }
+                
+                // Determine NIC type and extract data
+                if (nic.length === 10) {
+                    return this.validateOldNIC(nic, birthday);
+                } else {
+                    return this.validateNewNIC(nic, birthday);
+                }
+            }
+            
+            isValidFormat(nic) {
+                // Old NIC: 9 digits followed by V or X
+                if (/^[0-9]{9}[VX]$/.test(nic)) {
+                    return true;
+                }
+                // New NIC: 12 digits
+                if (/^[0-9]{12}$/.test(nic)) {
+                    return true;
+                }
+                return false;
+            }
+            
+            validateOldNIC(nic, birthday) {
+                // Extract year (first 2 digits)
+                const yearTwoDigits = nic.substring(0, 2);
+                const year = 1900 + parseInt(yearTwoDigits);
+                
+                // Extract day value (digits 3-5)
+                const dayValue = parseInt(nic.substring(2, 5));
+                
+                // Determine gender and adjust day value
+                const gender = dayValue > 500 ? 'Female' : 'Male';
+                const actualDayValue = dayValue > 500 ? dayValue - 500 : dayValue;
+                
+                // Convert day value to actual date
+                const nicDate = this.dayValueToDate(year, actualDayValue);
+                
+                if (!nicDate) {
+                    return {
+                        valid: false,
+                        message: 'Invalid day value in NIC!'
+                    };
+                }
+                
+                // Check if birthday matches
+                const birthdayDate = new Date(birthday);
+                const nicDateString = this.formatDateYMD(nicDate);
+                const birthdayDateString = this.formatDateYMD(birthdayDate);
+                
+                const isMatch = birthdayDateString === nicDateString;
+                
+                return {
+                    valid: isMatch,
+                    nic_type: 'Old NIC (9 digits + letter)',
+                    birth_year: year,
+                    gender: gender,
+                    nic_date: nicDateString,
+                    nic_date_dmy: this.formatDateDMY(nicDate),
+                    message: isMatch ? '✅ NIC is VALID and matches the birthday!' : '❌ NIC does NOT match the birthday!',
+                    full_nic: nic
+                };
+            }
+            
+            validateNewNIC(nic, birthday) {
+                // Extract year (first 4 digits)
+                const year = parseInt(nic.substring(0, 4));
+                
+                // Extract day value (digits 5-7)
+                const dayValue = parseInt(nic.substring(4, 7));
+                
+                // Determine gender and adjust day value
+                const gender = dayValue > 500 ? 'Female' : 'Male';
+                const actualDayValue = dayValue > 500 ? dayValue - 500 : dayValue;
+                
+                // Convert day value to actual date
+                const nicDate = this.dayValueToDate(year, actualDayValue);
+                
+                if (!nicDate) {
+                    return {
+                        valid: false,
+                        message: 'Invalid day value in NIC!'
+                    };
+                }
+                
+                // Check if birthday matches
+                const birthdayDate = new Date(birthday);
+                const nicDateString = this.formatDateYMD(nicDate);
+                const birthdayDateString = this.formatDateYMD(birthdayDate);
+                
+                const isMatch = birthdayDateString === nicDateString;
+                
+                return {
+                    valid: isMatch,
+                    nic_type: 'New NIC (12 digits)',
+                    birth_year: year,
+                    gender: gender,
+                    nic_date: nicDateString,
+                    nic_date_dmy: this.formatDateDMY(nicDate),
+                    message: isMatch ? '✅ NIC is VALID and matches the birthday!' : '❌ NIC does NOT match the birthday!',
+                    full_nic: nic
+                };
+            }
+            
+            dayValueToDate(year, dayValue) {
+                if (dayValue < 1 || dayValue > 366) {
+                    return null;
+                }
+                
+                // Create date using a leap year base (2024 is a leap year)
+                const baseDate = new Date(2024, 0, 1);
+                baseDate.setDate(baseDate.getDate() + dayValue - 1);
+                
+                const month = baseDate.getMonth();
+                const day = baseDate.getDate();
+                
+                const resultDate = new Date(year, month, day);
+                
+                if (resultDate.getMonth() !== month) {
+                    return null;
+                }
+                
+                return resultDate;
+            }
+            
+            formatDateYMD(date) {
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                return `${year}-${month}-${day}`;
+            }
+            
+            formatDateDMY(date) {
+                const day = String(date.getDate()).padStart(2, '0');
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const year = date.getFullYear();
+                return `${day}-${month}-${year}`;
+            }
+        }
+        
+        // Global variables
+        let currentMethod = 'calendar';
+        const validator = new NICValidator();
+        
+        // Populate dropdowns
+        function populateDropdowns() {
+            // Populate days
+            const daySelect = document.getElementById('day');
+            for (let i = 1; i <= 31; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = String(i).padStart(2, '0');
+                daySelect.appendChild(option);
+            }
+            
+            // Populate months
+            const monthSelect = document.getElementById('month');
+            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 
+                               'July', 'August', 'September', 'October', 'November', 'December'];
+            for (let i = 1; i <= 12; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = `${String(i).padStart(2, '0')} - ${monthNames[i - 1]}`;
+                monthSelect.appendChild(option);
+            }
+            
+            // Populate years (1900 to current year)
+            const yearSelect = document.getElementById('year');
+            const currentYear = new Date().getFullYear();
+            for (let y = currentYear; y >= 1900; y--) {
+                const option = document.createElement('option');
+                option.value = y;
+                option.textContent = y;
+                yearSelect.appendChild(option);
+            }
+        }
+        
+        // Method selection function
+        function selectMethod(method) {
+            currentMethod = method;
+            
+            // Update UI
+            const methodCalendar = document.getElementById('methodCalendar');
+            const methodStep = document.getElementById('methodStep');
+            const calendarSection = document.getElementById('calendarSection');
+            const stepSection = document.getElementById('stepSection');
+            
+            if (method === 'calendar') {
+                methodCalendar.classList.add('active');
+                methodStep.classList.remove('active');
+                calendarSection.style.display = 'block';
+                stepSection.style.display = 'none';
+            } else {
+                methodCalendar.classList.remove('active');
+                methodStep.classList.add('active');
+                calendarSection.style.display = 'none';
+                stepSection.style.display = 'block';
+            }
+        }
+        
+        // Get birthday from current method
+        function getBirthday() {
+            if (currentMethod === 'calendar') {
+                const calendarDate = document.getElementById('birthdayCalendar').value;
+                if (!calendarDate) return null;
+                
+                // Parse DD-MM-YYYY to YYYY-MM-DD
+                const parts = calendarDate.split('-');
+                if (parts.length === 3) {
+                    return `${parts[2]}-${parts[1]}-${parts[0]}`;
+                }
+                return null;
+            } else {
+                const day = document.getElementById('day').value;
+                const month = document.getElementById('month').value;
+                const year = document.getElementById('year').value;
+                
+                if (day && month && year) {
+                    return `${year}-${month}-${day}`;
+                }
+                return null;
+            }
+        }
+        
+        // Validate date not in future
+        function isDateValid(dateStr) {
+            const date = new Date(dateStr);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            return date <= today;
+        }
+        
+        // Form submission handler
+        document.getElementById('nicForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const nic = document.getElementById('nic').value;
+            
+            if (!nic) {
+                Swal.fire({
+                    title: 'Missing Information!',
+                    text: 'Please enter your NIC number.',
+                    icon: 'warning',
+                    confirmButtonColor: '#667eea'
+                });
+                return;
+            }
+            
+            const birthday = getBirthday();
+            
+            if (!birthday) {
+                Swal.fire({
+                    title: 'Missing Information!',
+                    text: 'Please enter your complete birthday.',
+                    icon: 'warning',
+                    confirmButtonColor: '#667eea'
+                });
+                return;
+            }
+            
+            if (!isDateValid(birthday)) {
+                Swal.fire({
+                    title: 'Invalid Date!',
+                    text: 'Birthday cannot be in the future. Please select a valid date.',
+                    icon: 'warning',
+                    confirmButtonColor: '#667eea'
+                });
+                return;
+            }
+            
+            // Validate NIC
+            const result = validator.validate(nic, birthday);
+            
+            if (result.valid) {
+                // Success popup
+                Swal.fire({
+                    title: '✅ NIC Validation Successful!',
+                    html: `
+                        <div style="text-align: left;">
+                            <p><strong>NIC Number:</strong> ${result.full_nic}</p>
+                            <p><strong>NIC Type:</strong> ${result.nic_type}</p>
+                            <p><strong>Birth Year:</strong> ${result.birth_year}</p>
+                            <p><strong>Gender:</strong> 
+                                <span class="badge" style="background: ${result.gender === 'Male' ? '#667eea' : '#dc3545'}; padding: 5px 10px; border-radius: 5px; color: white;">
+                                    ${result.gender} <i class="fas fa-${result.gender === 'Male' ? 'mars' : 'venus'}"></i>
+                                </span>
+                            </p>
+                            <p><strong>Extracted Birthday:</strong> ${result.nic_date_dmy} (DD-MM-YYYY)</p>
+                            <p><strong>Status:</strong> <span style="color: #28a745;">✓ Matches your birthday</span></p>
+                        </div>
+                    `,
+                    icon: 'success',
+                    confirmButtonColor: '#667eea',
+                    confirmButtonText: 'Great!',
+                    background: '#fff'
+                });
+            } else {
+                // Error popup
+                let birthdayDisplay = '';
+                if (currentMethod === 'calendar') {
+                    birthdayDisplay = document.getElementById('birthdayCalendar').value || 'Not provided';
+                } else {
+                    const day = document.getElementById('day').value;
+                    const month = document.getElementById('month').value;
+                    const year = document.getElementById('year').value;
+                    birthdayDisplay = (day && month && year) ? `${String(day).padStart(2, '0')}-${String(month).padStart(2, '0')}-${year}` : 'Not provided';
+                }
+                
+                Swal.fire({
+                    title: '❌ Validation Failed!',
+                    html: `
+                        <div style="text-align: left;">
+                            <p><strong>NIC Number:</strong> ${nic}</p>
+                            <p><strong>Birthday Entered:</strong> ${birthdayDisplay}</p>
+                            <hr>
+                            <p style="color: #dc3545;"><strong>Error:</strong> ${result.message}</p>
+                            ${result.nic_date_dmy ? `<p><strong>Extracted Birthday from NIC:</strong> ${result.nic_date_dmy}</p>` : ''}
+                            ${result.gender ? `<p><strong>Gender:</strong> ${result.gender}</p>` : ''}
+                            ${result.birth_year ? `<p><strong>Birth Year:</strong> ${result.birth_year}</p>` : ''}
+                        </div>
+                    `,
+                    icon: 'error',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'Try Again',
+                    background: '#fff'
+                });
+            }
+        });
+        
+        // Initialize flatpickr calendar
+        document.addEventListener('DOMContentLoaded', function() {
+            populateDropdowns();
+            
+            const calendarInput = document.getElementById('birthdayCalendar');
+            flatpickr(calendarInput, {
+                dateFormat: 'd-m-Y',
+                maxDate: 'today',
+                allowInput: true,
+                placeholder: 'DD-MM-YYYY'
+            });
+            
+            // Validate step inputs for future dates
+            const daySelect = document.getElementById('day');
+            const monthSelect = document.getElementById('month');
+            const yearSelect = document.getElementById('year');
+            
+            function validateStepDate() {
+                if (daySelect.value && monthSelect.value && yearSelect.value) {
+                    const day = parseInt(daySelect.value);
+                    const month = parseInt(monthSelect.value);
+                    const year = parseInt(yearSelect.value);
+                    const today = new Date();
+                    const inputDate = new Date(year, month - 1, day);
+                    
+                    if (inputDate > today) {
+                        Swal.fire({
+                            title: 'Invalid Date!',
+                            text: 'Birthday cannot be in the future. Please select a valid date.',
+                            icon: 'warning',
+                            confirmButtonColor: '#667eea'
+                        });
+                        daySelect.value = '';
+                        monthSelect.value = '';
+                        yearSelect.value = '';
+                    }
+                }
+            }
+            
+            daySelect.addEventListener('change', validateStepDate);
+            monthSelect.addEventListener('change', validateStepDate);
+            yearSelect.addEventListener('change', validateStepDate);
+        });
+    </script>
+</body>
+</html>
